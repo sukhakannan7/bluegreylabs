@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>bluegrey.labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Suisse+Int%27l+Mono&family=Syne:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0D0F11;
+  --bg2: #111418;
+  --bg3: #161B21;
+  --line: rgba(255,255,255,0.07);
+  --line2: rgba(255,255,255,0.12);
+  --blue: #2F6FBF;
+  --blue-bright: #4A8FE0;
+  --blue-dim: rgba(47,111,191,0.15);
+  --grey: #8A9BAD;
+  --grey-dim: rgba(138,155,173,0.4);
+  --white: #F2F4F6;
+  --white-dim: rgba(242,244,246,0.5);
+  --white-muted: rgba(242,244,246,0.28);
+  --display: 'Cormorant Garamond', Georgia, serif;
+  --ui: 'Syne', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--ui);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  cursor: crosshair;
+}
+
+a { cursor: crosshair; }
+
+/* ── GRAIN OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(13,15,17,0.88);
+  backdrop-filter: blur(20px);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.logo-mark {
+  width: 32px;
+  height: 32px;
+}
+
+.logo-name {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--white);
+}
+
+.nav-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--white-muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover { color: var(--white); }
+
+/* ── HERO ── */
+#home {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: 0 48px;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 100%);
+}
+
+.hero-accent {
+  position: absolute;
+  top: 30%;
+  right: -120px;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(47,111,191,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 120px;
+  padding-bottom: 60px;
+  max-width: 820px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--blue-bright);
+  margin-bottom: 36px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.1s forwards;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--blue-bright);
+  flex-shrink: 0;
+}
+
+h1 {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(44px, 6vw, 80px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  margin-bottom: 36px;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.2s forwards;
+}
+
+h1 em {
+  font-style: italic;
+  color: var(--grey);
+}
+
+.hero-thesis {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--white-dim);
+  line-height: 1.8;
+  max-width: 520px;
+  border-left: 1px solid var(--blue);
+  padding-left: 20px;
+  margin-bottom: 52px;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.35s forwards;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 16px;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.5s forwards;
+}
+
+.btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 13px 26px;
+  text-decoration: none;
+  transition: all 0.25s;
+  border-radius: 1px;
+}
+
+.btn-solid {
+  background: var(--blue);
+  color: var(--white);
+  border: 1px solid var(--blue);
+}
+
+.btn-solid:hover {
+  background: var(--blue-bright);
+  border-color: var(--blue-bright);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--grey);
+  border: 1px solid rgba(138,155,173,0.3);
+}
+
+.btn-outline:hover {
+  color: var(--white);
+  border-color: rgba(242,244,246,0.4);
+}
+
+.hero-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-top: 1px solid var(--line);
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.65s forwards;
+}
+
+.hero-tagline {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--white-muted);
+  letter-spacing: 0.01em;
+}
+
+.hero-scroll {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--white-muted);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.scroll-line {
+  width: 40px;
+  height: 1px;
+  background: var(--white-muted);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+/* ── SECTION BASE ── */
+section:not(#home) {
+  padding: 120px 48px;
+  border-bottom: 1px solid var(--line);
+}
+
+.s-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--blue-bright);
+  margin-bottom: 52px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.s-label::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--blue-bright);
+}
+
+h2 {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+
+/* ── APPROACH ── */
+#approach { background: var(--bg2); }
+
+.approach-layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.approach-left h2 { margin-bottom: 24px; }
+
+.approach-left p {
+  font-size: 13px;
+  color: var(--grey);
+  line-height: 1.8;
+  max-width: 280px;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 24px;
+  padding: 28px 0;
+  border-top: 1px solid var(--line);
+  transition: background 0.3s;
+}
+
+.step:last-child { border-bottom: 1px solid var(--line); }
+
+.step-n {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--blue-bright);
+  padding-top: 3px;
+  opacity: 0.7;
+}
+
+.step-title {
+  font-family: var(--ui);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+
+.step-body {
+  font-size: 13px;
+  color: var(--grey);
+  line-height: 1.75;
+}
+
+.principle {
+  margin-top: 48px;
+  padding: 28px 32px;
+  background: var(--blue-dim);
+  border: 1px solid rgba(47,111,191,0.25);
+  border-left: 2px solid var(--blue-bright);
+}
+
+.principle-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--blue-bright);
+  margin-bottom: 12px;
+  opacity: 0.8;
+}
+
+.principle p {
+  font-size: 13px;
+  color: var(--white-dim);
+  line-height: 1.8;
+}
+
+.principle strong { color: var(--white); font-weight: 700; }
+
+/* ── WORK ── */
+#work { background: var(--bg); }
+
+.work-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: end;
+  margin-bottom: 72px;
+}
+
+.work-header h2 { margin-bottom: 0; }
+
+.work-sub {
+  font-size: 13px;
+  color: var(--grey);
+  line-height: 1.8;
+  padding-bottom: 6px;
+}
+
+/* CASE CARDS */
+.cases { display: flex; flex-direction: column; gap: 2px; }
+
+.case {
+  background: var(--bg3);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.case:hover { border-color: var(--line2); }
+
+.case-top {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  padding: 36px 40px 32px;
+  gap: 24px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.case-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.case-client {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--blue-bright);
+}
+
+.case-domain {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--white-muted);
+  background: var(--line);
+  padding: 3px 9px;
+  border: 1px solid var(--line2);
+}
+
+.case-headline {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(20px, 2.5vw, 28px);
+  line-height: 1.2;
+  color: var(--white);
+  max-width: 560px;
+}
+
+.case-toggle {
+  font-family: var(--mono);
+  font-size: 18px;
+  color: var(--grey-dim);
+  transition: transform 0.35s, color 0.3s;
+  padding-top: 4px;
+  line-height: 1;
+}
+
+.case.open .case-toggle {
+  transform: rotate(45deg);
+  color: var(--blue-bright);
+}
+
+.case-stats {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid var(--line);
+}
+
+.stat {
+  padding: 20px 40px;
+  border-right: 1px solid var(--line);
+  flex: 1;
+}
+
+.stat:last-child { border-right: none; }
+
+.stat-num {
+  font-family: var(--display);
+  font-size: 26px;
+  font-weight: 300;
+  color: var(--blue-bright);
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--grey);
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+
+/* EXPANDABLE BODY */
+.case-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.case.open .case-body { max-height: 1000px; }
+
+.case-detail {
+  border-top: 1px solid var(--line);
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px 48px;
+}
+
+.detail-block {}
+
+.detail-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--blue-bright);
+  margin-bottom: 10px;
+  opacity: 0.75;
+}
+
+.detail-text {
+  font-size: 13px;
+  color: var(--grey);
+  line-height: 1.8;
+}
+
+.detail-text strong { color: var(--white); font-weight: 700; }
+
+.case-lesson {
+  border-top: 1px solid var(--line);
+  padding: 20px 40px;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.lesson-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--blue-bright);
+  flex-shrink: 0;
+  opacity: 0.75;
+}
+
+.lesson-text {
+  font-size: 13px;
+  color: var(--white-dim);
+  font-style: italic;
+  font-family: var(--display);
+  font-size: 16px;
+}
+
+/* Triorra layers */
+.layers {
+  padding: 0 40px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--line);
+}
+
+.layer {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 24px;
+}
+
+.layer:last-child { border-bottom: none; }
+
+.layer-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue-bright);
+  padding-top: 2px;
+}
+
+.layer-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+.layer-body {
+  font-size: 13px;
+  color: var(--grey);
+  line-height: 1.75;
+}
+
+.layer-body strong { color: var(--white); font-weight: 700; }
+
+/* ── ABOUT ── */
+#about { background: var(--bg2); }
+
+.about-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 100px;
+  align-items: start;
+}
+
+.about-name {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 40px;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.about-role {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--grey);
+  margin-bottom: 32px;
+}
+
+.about-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--blue-bright);
+  border: 1px solid rgba(74,143,224,0.2);
+  background: rgba(74,143,224,0.05);
+  padding: 7px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tag::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  background: var(--blue-bright);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.about-paras p {
+  font-size: 14px;
+  color: var(--grey);
+  line-height: 1.85;
+  margin-bottom: 20px;
+}
+
+.about-paras p:last-child { margin-bottom: 0; }
+.about-paras strong { color: var(--white); font-weight: 700; }
+
+/* ── CONTACT ── */
+#contact {
+  background: var(--bg);
+  padding: 140px 48px;
+  text-align: center;
+  border-bottom: none;
+}
+
+#contact .s-label {
+  justify-content: center;
+}
+
+#contact .s-label::before { display: none; }
+
+#contact h2 {
+  margin-bottom: 20px;
+  font-size: clamp(36px, 5vw, 64px);
+}
+
+.contact-sub {
+  font-size: 13px;
+  color: var(--grey);
+  margin-bottom: 52px;
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+}
+
+.contact-email {
+  display: inline-block;
+  font-family: var(--display);
+  font-style: italic;
+  font-size: clamp(20px, 3vw, 32px);
+  color: var(--white);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(242,244,246,0.2);
+  padding-bottom: 4px;
+  transition: color 0.3s, border-color 0.3s;
+  letter-spacing: 0.01em;
+}
+
+.contact-email:hover {
+  color: var(--blue-bright);
+  border-color: var(--blue-bright);
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--bg2);
+  border-top: 1px solid var(--line);
+  padding: 20px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.foot-logo {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--white-muted);
+}
+
+.foot-note {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(255,255,255,0.18);
+  letter-spacing: 0.04em;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; width: 40px; }
+  50%       { opacity: 0.7; width: 60px; }
+}
+
+/* scroll-triggered reveals */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 760px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  #home, section:not(#home), #contact { padding-left: 20px; padding-right: 20px; }
+  .approach-layout { grid-template-columns: 1fr; gap: 48px; }
+  .work-header { grid-template-columns: 1fr; gap: 16px; margin-bottom: 40px; }
+  .about-layout { grid-template-columns: 1fr; gap: 40px; }
+  .case-top { padding: 24px; }
+  .case-detail { grid-template-columns: 1fr; padding: 24px; }
+  .case-stats { flex-wrap: wrap; }
+  .stat { padding: 16px 24px; min-width: 50%; }
+  .layers { padding: 0 24px 24px; }
+  .layer { grid-template-columns: 1fr; gap: 8px; }
+  .case-lesson { padding: 16px 24px; }
+  footer { padding: 16px 20px; flex-direction: column; align-items: flex-start; gap: 6px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="logo">
+    <!-- NEW LOGO MARK: two offset rhombus facets -->
+    <svg class="logo-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Blue facet (top-left diamond) -->
+      <polygon points="6,10 15,5 20,12 11,17" fill="#2F6FBF" opacity="0.9"/>
+      <!-- Blue shadow facet -->
+      <polygon points="6,10 11,17 11,24 6,17" fill="#1A4A8A"/>
+      <!-- Grey facet (top-right diamond) -->
+      <polygon points="15,5 26,10 26,17 20,12" fill="#6B8299" opacity="0.9"/>
+      <!-- Grey shadow facet -->
+      <polygon points="20,12 26,17 20,22 11,17" fill="#3D4F5E" opacity="0.9"/>
+      <!-- Center upward arrow -->
+      <polygon points="14.5,9 17.5,9 17.5,18 14.5,18" fill="#E8F1FA" opacity="0.85"/>
+      <polygon points="12,13 16,8 20,13" fill="#E8F1FA" opacity="0.85"/>
+    </svg>
+    <span class="logo-name">bluegrey.labs</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#approach">Approach</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-accent"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Independent Consulting Practice</p>
+    <h1>
+      Systems fail when<br>
+      decisions live in<br>
+      <em>a single person's head.</em>
+    </h1>
+    <p class="hero-thesis">
+      bluegrey.labs diagnoses where decision-making is unstructured and concentrated — then builds the simplest system that fixes it and actually gets used.
+    </p>
+    <div class="hero-ctas">
+      <a href="#work" class="btn btn-solid">See the work</a>
+      <a href="#approach" class="btn btn-outline">The method</a>
+    </div>
+  </div>
+  <div class="hero-foot">
+    <span class="hero-tagline">Structure over sophistication.</span>
+    <span class="hero-scroll">
+      Scroll
+      <span class="scroll-line"></span>
+    </span>
+  </div>
+</section>
+
+<!-- APPROACH -->
+<section id="approach">
+  <div style="max-width:1100px; margin:0 auto;">
+    <p class="s-label reveal">Approach</p>
+    <div class="approach-layout">
+      <div class="approach-left reveal">
+        <h2>The method.</h2>
+        <br>
+        <p>A repeatable four-step process applied to every engagement — what separates a structured practice from ad-hoc advisory.</p>
+      </div>
+      <div class="steps reveal">
+        <div class="step">
+          <span class="step-n">01</span>
+          <div>
+            <p class="step-title">Diagnose the root cause</p>
+            <p class="step-body">The presenting problem is rarely the real one. Every engagement starts with structured diagnosis — not assumptions.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-n">02</span>
+          <div>
+            <p class="step-title">Design for actual capability</p>
+            <p class="step-body">Solutions fit the real technical capability of the people who'll use them. Google Forms outperforms enterprise software when it's actually adopted.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-n">03</span>
+          <div>
+            <p class="step-title">Ensure adoption</p>
+            <p class="step-body">A system that isn't used has zero value. Adoption is a design constraint — not an afterthought.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-n">04</span>
+          <div>
+            <p class="step-title">Measure the outcome</p>
+            <p class="step-body">Every intervention is tied to a quantifiable result. If you can't measure it, you don't know if it worked.</p>
+          </div>
+        </div>
+        <div class="principle reveal">
+          <p class="principle-label">Guiding Principle</p>
+          <p>Adoption matters more than elegance. At one client, two sophisticated systems were rejected outright — engineers resisted the complexity. <strong>A phone-operable Google Forms solution succeeded where both failed.</strong> That lesson shaped every engagement since.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <div style="max-width:1100px; margin:0 auto;">
+    <p class="s-label reveal">Case Studies</p>
+    <div class="work-header reveal">
+      <h2>Three engagements.<br>One root cause.</h2>
+      <p class="work-sub">Operations, sales, growth — different domains. Same failure: unstructured decisions concentrated in individuals. Same method each time. Click any case to expand.</p>
+    </div>
+
+    <div class="cases">
+
+      <!-- CASE 1 -->
+      <div class="case reveal" id="c1">
+        <div class="case-top" onclick="toggle('c1')">
+          <div>
+            <div class="case-meta">
+              <span class="case-client">ACS Air</span>
+              <span class="case-domain">Operations</span>
+            </div>
+            <p class="case-headline">Converting expert dependency into repeatable execution</p>
+          </div>
+          <span class="case-toggle">+</span>
+        </div>
+        <div class="case-stats">
+          <div class="stat">
+            <div class="stat-num">8 → 2</div>
+            <div class="stat-label">Stock delays per project</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">₹30–40K</div>
+            <div class="stat-label">Savings per project</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">↓ Significant</div>
+            <div class="stat-label">CEO involvement in routine decisions</div>
+          </div>
+        </div>
+        <div class="case-body">
+          <div class="case-detail">
+            <div class="detail-block">
+              <p class="detail-label">Context</p>
+              <p class="detail-text">Project-based AC contracting business. Nearly every routine decision ran through the founder — execution depended on his procurement judgment and on-site coordination.</p>
+            </div>
+            <div class="detail-block">
+              <p class="detail-label">Root Cause</p>
+              <p class="detail-text"><strong>Symptom:</strong> Material shortages, inconsistent execution. <strong>Reality:</strong> Expert knowledge was locked in the CEO's head. Dependency was structural — not a skills gap.</p>
+            </div>
+            <div class="detail-block">
+              <p class="detail-label">Intervention</p>
+              <p class="detail-text">A requirements checklist converting expert knowledge into a repeatable pre-project workflow. Plus a Google Forms resource analyser — phone-operable for non-technical site managers — tracking material allocation and predicting requirements. All computation automated.</p>
+            </div>
+            <div class="detail-block">
+              <p class="detail-label">What It Took</p>
+              <p class="detail-text">Two prior systems were scrapped. Engineers resisted passwords and operational overhead. The lesson: <strong>friction and usability determine whether a system exists in practice</strong>, not just on paper.</p>
+            </div>
+          </div>
+          <div class="case-lesson">
+            <span class="lesson-tag">Dimension</span>
+            <span class="lesson-text">Friction and usability — the gap between a system that exists and one that gets used.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 2 -->
+      <div class="case reveal" id="c2">
+        <div class="case-top" onclick="toggle('c2')">
+          <div>
+            <div class="case-meta">
+              <span class="case-client">NG Engineers</span>
+              <span class="case-domain">Sales Communication</span>
+            </div>
+            <p class="case-headline">Pitching fewer prospects converted more of them</p>
+          </div>
+          <span class="case-toggle">+</span>
+        </div>
+        <div class="case-stats">
+          <div class="stat">
+            <div class="stat-num">~50%</div>
+            <div class="stat-label">Conversion rate improvement</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">1-in-4</div>
+            <div class="stat-label">Up from 1-in-6 previously</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">40 → 28</div>
+            <div class="stat-label">Monthly prospects pitched</div>
+          </div>
+        </div>
+        <div class="case-body">
+          <div class="case-detail">
+            <div class="detail-block">
+              <p class="detail-label">Context</p>
+              <p class="detail-text">B2B manufacturer of electrical chips and batteries. 2–3 year sales cycles, no online presence. Every client interaction depended on who was presenting that day.</p>
+            </div>
+            <div class="detail-block">
+              <p class="detail-label">Root Cause</p>
+              <p class="detail-text"><strong>Symptom:</strong> Inconsistent pitches, 2–3 days per prospect. <strong>Reality:</strong> No repeatable communication structure. Not a demand problem — a structure problem.</p>
+            </div>
+            <div class="detail-block">
+              <p class="detail-label">Intervention</p>
+              <p class="detail-text">Automated email pipeline delivering the full product catalog in website format — enabling prospects to self-qualify. Paired with a standardized pitch framework (ChatGPT skill) so every interaction follows a consistent structure.</p>
+            </div>
+            <div class="detail-block">
+              <p class="detail-label">Counterintuitive Result</p>
+              <p class="detail-text">Monthly prospects pitched dropped from 40–45 to 25–30. Conversion improved from 1-in-6 to 1-in-4. <strong>Filtering demand outperformed generating it.</strong></p>
+            </div>
+          </div>
+          <div class="case-lesson">
+            <span class="lesson-tag">Dimension</span>
+            <span class="lesson-text">Communication systems — and why filtering demand can matter more than generating it.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 3 -->
+      <div class="case reveal" id="c3">
+        <div class="case-top" onclick="toggle('c3')">
+          <div>
+            <div class="case-meta">
+              <span class="case-client">Triorra Looms</span>
+              <span class="case-domain">Operations + Growth</span>
+            </div>
+            <p class="case-headline">From operator to strategist across three layers in one engagement</p>
+          </div>
+          <span class="case-toggle">+</span>
+        </div>
+        <div class="case-stats">
+          <div class="stat">
+            <div class="stat-num">3hrs → 1 link</div>
+            <div class="stat-label">Weekly catalog handling</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">~8×</div>
+            <div class="stat-label">Order velocity (campaign)</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">3 / 8 DMs</div>
+            <div class="stat-label">WhatsApp conversion rate</div>
+          </div>
+        </div>
+        <div class="case-body">
+          <div class="case-detail" style="grid-template-columns:1fr; gap:0; padding-bottom:0;">
+            <div class="detail-block" style="padding-bottom:20px;">
+              <p class="detail-label">Context</p>
+              <p class="detail-text">Home-based clothing business, ~50 customers, stock across two locations. No formal metrics. Operations ran entirely on memory and intuition.</p>
+            </div>
+          </div>
+          <div class="layers">
+            <div class="layer">
+              <span class="layer-badge">Layer 01 — Operations</span>
+              <div>
+                <p class="layer-title">Making it traceable</p>
+                <p class="layer-body">Lightweight ERP — Excel backend, Google Forms front end — for inventory, orders, and procurement. Automated the Instagram catalog pipeline with a GitHub-hosted site. <strong>Catalog handling: 3–4 hrs/week → sending one link.</strong></p>
+              </div>
+            </div>
+            <div class="layer">
+              <span class="layer-badge">Layer 02 — Behavioral</span>
+              <div>
+                <p class="layer-title">Making urgency work</p>
+                <p class="layer-body">Stock-clearance campaign. First attempt: positive reactions, few purchases — urgency was absent. Redesigned around scarcity + personalization via WhatsApp. <strong>~8 orders in 20 days → ~25 items in 3 days. Profit: ₹2,000/20 days → ₹3,750/3 days.</strong></p>
+              </div>
+            </div>
+            <div class="layer">
+              <span class="layer-badge">Layer 03 — Strategy</span>
+              <div>
+                <p class="layer-title">Reframing the problem</p>
+                <p class="layer-body">Final sale day: ~12 prospects asking for sizes not in stock. Root cause: primary audience is 35+, so M/S sizes accumulate as dead stock — structural given wholesale procurement. <strong>An inventory problem was reframed as a segmentation problem.</strong> Solution: Instagram story-swap partnerships with brands whose audiences skew 20–35 — moving dead stock while building the missing demographic. In implementation.</p>
+              </div>
+            </div>
+          </div>
+          <div class="case-lesson">
+            <span class="lesson-tag">Dimension</span>
+            <span class="lesson-text">Segmentation and inventory economics — the full arc from operator to strategist in a single engagement.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div style="max-width:1100px; margin:0 auto;">
+    <p class="s-label reveal">About</p>
+    <div class="about-layout reveal">
+      <div>
+        <p class="about-name">Sukha<br>Kannan</p>
+        <p class="about-role">Founder, bluegrey.labs</p>
+        <div class="about-tags">
+          <span class="tag">Data Scientist — Oracle FS</span>
+          <span class="tag">AML / Financial Crime</span>
+          <span class="tag">McKinsey Forward</span>
+          <span class="tag">Machine Learning & AI Systems</span>
+        </div>
+      </div>
+      <div class="about-paras">
+        <p>The same structural problem kept appearing across very different environments: capable people bottlenecked by the absence of structure — making decisions that couldn't be delegated, repeated, or scaled because they existed only as individual knowledge. bluegrey.labs was built to address that specific failure.</p>
+        <p>By day: <strong>Data Scientist at Oracle Financial Services</strong>, working in the Financial Crime and Compliance domain. Background in machine learning, AI systems, and AML. The pattern-recognition that comes from building analytical systems translates directly to diagnosing structural breakdowns in smaller businesses.</p>
+        <p>Trained through <strong>McKinsey's Forward program</strong> in structured problem-solving — identifying root causes, not symptoms. The three engagements here show a deliberate intellectual progression: friction and usability (ACS Air), communication systems (NG Engineers), behavioral psychology into segmentation strategy (Triorra). Same root cause. Different expression. Same method.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="s-label">Contact</p>
+  <h2>Work with<br><em>the practice.</em></h2>
+  <p class="contact-sub" style="margin-top:12px;">Small and mid-sized businesses that need to scale beyond founder intuition.</p>
+  <br><br>
+  <a href="mailto:hello@bluegreylabs.com" class="contact-email">hello@bluegreylabs.com</a>
+</section>
+
+<footer>
+  <span class="foot-logo">bluegrey.labs</span>
+  <span class="foot-note">Independent consulting practice. Not a registered entity.</span>
+</footer>
+
+<script>
+function toggle(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 60);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
